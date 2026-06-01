@@ -1,0 +1,57 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Visual Studio / Rider
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+
+# Unity / game development
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+sysinfo.txt
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.apk
+*.unitypackage
+
+# Godot
+.import/
+.export/
+export_presets.cfg
+.cache/
+*.mono/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.code-workspace
+
+# Backup and temporary files
+*.tmp
+*.temp
+*.bak
+*~
+
+# Logs
+*.log
+
+# Package manager
+node_modules/
+*.json
+**/*.json

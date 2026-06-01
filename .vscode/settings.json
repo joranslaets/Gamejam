@@ -1,0 +1,7 @@
+{
+    "dotnet.defaultSolution": "Gamejam_Aron_Joran.sln",
+    "files.exclude": {
+        "**/*.json": true,
+        "**/*.csproj": true
+    }
+}
