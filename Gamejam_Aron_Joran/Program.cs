@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Raylib_cs;
-
 class Program
 {
     class Particle
@@ -13,6 +12,9 @@ class Program
         public float Size;
         public Color Color;
     }
+
+    
+
 
     static void Main()
     {
@@ -174,3 +176,4 @@ class Program
         Raylib.DrawCircleV(pos, radius, new Color(90, 50, 20, 255));
     }
 }
+
