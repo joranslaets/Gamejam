@@ -38,6 +38,9 @@ class Program
 
         List<Particle> particles = new List<Particle>();
 
+        // --- NIEUW: cursor rotatie ---
+        float cursorAngle = 0f;
+
         while (!Raylib.WindowShouldClose())
         {
             double now = Raylib.GetTime();
@@ -113,6 +116,9 @@ class Program
                     particles.RemoveAt(i);
             }
 
+            // --- NIEUW: cursor animatie updaten ---
+            cursorAngle += 0.3f * Raylib.GetFrameTime();
+
             // TEKENEN
             Raylib.BeginDrawing();
             Raylib.ClearBackground(new Color(255, 245, 225, 255));
@@ -126,6 +132,9 @@ class Program
 
             // Glow achter cookie
             Raylib.DrawCircleV(cookiePos, cookieRadius * 1.4f, new Color(255, 230, 150, 80));
+
+            // --- NIEUW: cursors rond cookie tekenen ---
+            DrawCursors(cookiePos, cookieRadius, cps, cursorAngle);
 
             // Cookie body
             float r = cookieRadius * cookieScale;
@@ -144,10 +153,8 @@ class Program
             // Particles
             foreach (var p in particles)
             {
-                // Maak nieuwe kleur met alpha op basis van Life
-                Color baseColor = p.Color;
                 byte alpha = (byte)(p.Life * 255);
-                Color c = new Color(baseColor.R, baseColor.G, baseColor.B, alpha);
+                Color c = new Color(p.Color.R, p.Color.G, p.Color.B, alpha);
                 Raylib.DrawCircleV(p.Pos, p.Size, c);
             }
 
@@ -156,10 +163,8 @@ class Program
                 ? new Color(255, 180, 80, 255)
                 : new Color(180, 180, 180, 255);
 
-            // Rounded rect + outline (let op: extra parameter lineThick)
             Raylib.DrawRectangleRounded(upgradeButton, 0.4f, 10, btnColor);
             Raylib.DrawRectangleRoundedLines(upgradeButton, 0.4f, 10, new Color(120, 70, 20, 255));
-
 
             string btnText = $"Koop upgrade (+1 CPS) – Kost: {upgradeCost}";
             int tw = Raylib.MeasureText(btnText, 22);
@@ -175,5 +180,34 @@ class Program
     {
         Raylib.DrawCircleV(pos, radius, new Color(90, 50, 20, 255));
     }
-}
 
+    // --- NIEUW: cursors rond de cookie ---
+    static void DrawCursors(Vector2 center, float cookieRadius, int cps, float angleOffset)
+    {
+        if (cps <= 0) return;
+
+        int count = Math.Min(cps, 64);
+        float orbitRadius = cookieRadius * 1.55f;
+        float angleStep = (MathF.PI * 2f) / count;
+
+        for (int i = 0; i < count; i++)
+        {
+            float angle = i * angleStep + angleOffset;
+
+            Vector2 pos = center + new Vector2(
+                MathF.Cos(angle) * orbitRadius,
+                MathF.Sin(angle) * orbitRadius
+            );
+
+            float pointAngle = angle + MathF.PI;
+            float size = 14f;
+
+            Vector2 tip   = pos + new Vector2(MathF.Cos(pointAngle) * size,                MathF.Sin(pointAngle) * size);
+            Vector2 left  = pos + new Vector2(MathF.Cos(pointAngle + 2.5f) * size * 0.6f,  MathF.Sin(pointAngle + 2.5f) * size * 0.6f);
+            Vector2 right = pos + new Vector2(MathF.Cos(pointAngle - 2.5f) * size * 0.6f,  MathF.Sin(pointAngle - 2.5f) * size * 0.6f);
+
+            Raylib.DrawTriangle(tip, left, right, Color.White);
+            Raylib.DrawTriangleLines(tip, left, right, new Color(100, 100, 100, 200));
+        }
+    }
+}
